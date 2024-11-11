@@ -47,8 +47,8 @@ const repos = {
   heading: "Recent Projects / Click Repo to find out more!",
   gitHubUsername: "JohnnyHuang101", 
   reposLength: 0,
-    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "VAE_Debiasing_KLresampled_CeleryA", "UNET_inverse_solverandPnP",
-        "RL_maze_pacman", "Projects_LSTMRNN-ConvCGAN", "Petrichor_website_eventsApp", "Verizon-BlackScholes_CRR", "JohnnyHuang101.github.io"],
+    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "QR-code-Scanner", "Petrichor_website_eventsApp", "Verizon-BlackScholes_CRR", "VAE_Debiasing_KLresampled_CeleryA", "UNET_inverse_solverandPnP",
+        "RL_maze_pacman", "Projects_LSTMRNN-ConvCGAN", "JohnnyHuang101.github.io"],
 };
 
 
@@ -56,7 +56,7 @@ const getInTouch = {
     show: true,
     heading: "Getting In Touch",
     message:
-        "Please contact me at my email linked at the top of the website!"
+        'Need to contact me? Send me an email linked <i class="fas fa-share-alt"></i> at the top of my website!'
 };
 
 
