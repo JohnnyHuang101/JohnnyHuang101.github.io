@@ -5,11 +5,11 @@ const navBar = {
 
 // Main Body SECTION
 const mainBody = {
-  gradientColors: "#2e7d32, #276b2a, #205822, #19461a, #123312",
+  gradientColors: "linear-gradient(90deg, #2e7d32, #276b2a,rgb(28, 96, 31),rgb(38, 116, 42),rgb(49, 134, 54))",
   firstName: "Johnny",
   middleName: "",
   lastName: "Huang",
-  message: "Interested in Computer Vision, Generative AI, Data Analysis and SWE.",
+  message: "Interested in Computer Vision, Generative Transformer Models, and Software Engineering.",
   icons: [
     {
       image: "fa-github",
@@ -47,7 +47,7 @@ const repos = {
   heading: "Recent Projects / Click Repo to find out more!",
   gitHubUsername: "JohnnyHuang101", 
   reposLength: 0,
-    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "Petrichor_website_eventsApp", "DiaryApp", "QR-code-Scanner", "UNET_inverse_solverandPnP", "VAE_Debiasing_KLresampled_CeleryA", "RL_maze_pacman", "Projects_LSTMRNN-ConvCGAN", "Verizon-BlackScholes_CRR", "JohnnyHuang101.github.io"],
+    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_inverse_solverandPnP", "Petrichor_website_eventsApp", "VAE_Debiasing_KLresampled_CeleryA", "RL_maze_pacman", "Projects_LSTM_ConvCGAN", "Verizon-BlackScholes_CRR", "JohnnyHuang101.github.io"],
 };
 
 
@@ -59,4 +59,4 @@ const getInTouch = {
 };
 
 
-export { navBar, mainBody, about, repos, getInTouch};
+export {navBar, mainBody, about, repos, getInTouch};
