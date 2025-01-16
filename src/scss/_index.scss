@@ -53,18 +53,19 @@ code {
   transition: background-color 0.2s;
 }
 .brand {
-  color: #363636 !important;
+  color: #373737 !important;
 }
 .nav-item {
   transition: color, 0.2s;
 }
+
 .toggler {
   border: none;
   padding: 4px;
   border-radius: 4px;
   &:focus {
     outline: none;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(83, 83, 83, 0.201);
   }
 }
 .socialicons {
