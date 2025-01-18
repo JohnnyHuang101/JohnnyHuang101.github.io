@@ -1,7 +1,7 @@
 {
   "name": "developers-portfolio",
   "description": "A personal static website/portfolio template hosted with GitHub Pages, built to showcase my recent projects.",
-  "homepage": "http://JohnnyHuang101.github.io",
+  "homepage": "https://JohnnyHuang101.github.io/JohnnyHuang101",
   "version": "2.0.0",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,7 +16,7 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "react-typist-component": "^1.0.3",
+    "react-typist-component": "^1.1.1",
     "sass": "^1.54.3",
     "web-vitals": "^2.1.4"
   },
