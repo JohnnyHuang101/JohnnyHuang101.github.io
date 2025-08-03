@@ -7,4 +7,6 @@ npm run build
 commit changes
 npm run deploy
 
+>>Workaround
+If dont wokr then just push build folder manually
 Code of Website portfolio for Johnny
