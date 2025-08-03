@@ -5,11 +5,11 @@ const navBar = {
 
 // Main Body SECTION
 const mainBody = {
-  gradientColors: "rgb(72, 200, 79),rgb(40, 125, 44),rgb(14, 49, 16),rgb(22, 60, 24),rgb(48, 188, 57)",
+  gradientColors: "rgb(0, 102, 204), rgb(0, 76, 153), rgb(0, 51, 102), rgb(25, 25, 112), rgb(70, 130, 180)",
   firstName: "Johnny",
   middleName: "",
   lastName: "Huang",
-  message: "Interested in Computer Vision, Generative Machine Learning Models, and Software Engineering.",
+  message: "Interested in Software Engineering and Machine Learning.",
   icons: [
     {
       image: "fa-github",
@@ -37,8 +37,8 @@ const about = {
   imageLink: require("../editable-stuff/johnny_2024.jpg"),
   imageSize: 400,
   message:
-        "Hi I'm Johnny, and welcome to my profile! 😄  I'm currently a Junior at Washington University in St. Louis, pursuing a B.S. in Computer Science + Mathematics. Originally from ShenZhen China, I moved to the U.S. at age 12 and grew up in the Bay Area (specifically around San Mateo & Foster City). Fun fact: I have an identical twin brother, Johnson, who’s also studying CS and Math at UC Berkeley! \n\nMy primary interests lie in computer vision and generative AI, and I’m enthusiastic about leveraging these fields to build tangible solutions. I have hands-on experience as a full-stack developer, where I deployed end-to-end ML tools using Python and framworks like OpenCV, Pytorch, Tensorflow, and Huggingface. Additionally, I have a strong background in data analytics, including work with databases including MariaDB, Postgre, NoSQL and financial analysis algorithms using tools like R and MATLAB. I also have experience with computing using tools like PySpark and Scala on the cloud using tools such as AWS, Docker, and Azure. \n\nI built this simple portfolio using JS, HTML, Node, and React to showcase a few of my projects. They're pretty cool, so please check them out on my GitHub!",
-  resume: require("../editable-stuff/Job-Resume-Oct-16th-2024-Johnny.pdf"),
+    "Hi, I’m Johnny — welcome to my portfolio! 😄\n\nI’m currently a Senior at Washington University in St. Louis, pursuing a B.S. in Computer Science + Mathematics, and will be continuing for an M.S. in Computer Science in Spring 2026.\n\nOriginally from Shenzhen, China, I moved to the U.S. at age 12 and grew up in the Bay Area (Foster City). A fun fact: I have an identical twin brother, Johnson, who’s also studying CS and Math—at UC Berkeley!\n\nMy main interests lie in software engineering, especially building highly scalable and efficient systems, services, and databases. I also enjoy applying ML solutions in meaningful, production-ready settings (ie. RAG search systems). I have hands-on experience as a full-stack developer, building fast and resilient web servers and designing scalable SQL and NoSQL databases.\n\nI’ve also worked on end-to-end machine learning tools, including validation pipelines and agent-based systems powered by LLMs. Additionally, I’m familiar with cloud platforms like AWS and managing microservices using Docker containers.\n\nThis portfolio was built using JavaScript, Node, and React to highlight a few of my projects. They’re pretty cool—check them out! More details are on my GitHub!",
+  resume: require("../editable-stuff/Job-Resume-Aug-1st-2025-Johnny.pdf"),
 };
 
 
@@ -47,7 +47,7 @@ const repos = {
   heading: "Recent Projects / Click Repo to find out more!",
   gitHubUsername: "JohnnyHuang101", 
   reposLength: 0,
-    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "VAE_Debiasing_KL_Resampling", "RL_maze_pacman", "Projects_LSTM_ConvCGAN", "Verizon-BlackScholes_CRR", "JohnnyHuang101.github.io"],
+    specificRepos: ["Halu--OpenBMB-4B-Tuned-and-Inference", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman", "Verizon-BlackScholes_CRR", "JohnnyHuang101.github.io"],
 };
 
 
