@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/home/static/css/main.2c3308b8.css",
-    "main.js": "/home/static/js/main.77bf954c.js",
-    "static/js/453.19c7e6ca.chunk.js": "/home/static/js/453.19c7e6ca.chunk.js",
-    "static/media/johnny_2024.jpg": "/home/static/media/johnny_2024.d3469f5810d14590db64.jpg",
-    "static/media/Job-Resume-Aug-1st-2025-Johnny.pdf": "/home/static/media/Job-Resume-Aug-1st-2025-Johnny.281336d8ce68f8b9bd92.pdf",
-    "index.html": "/home/index.html",
-    "main.2c3308b8.css.map": "/home/static/css/main.2c3308b8.css.map",
-    "main.77bf954c.js.map": "/home/static/js/main.77bf954c.js.map",
-    "453.19c7e6ca.chunk.js.map": "/home/static/js/453.19c7e6ca.chunk.js.map"
+    "main.css": "/static/css/main.2c3308b8.css",
+    "main.js": "/static/js/main.aee3bcc6.js",
+    "static/js/453.19c7e6ca.chunk.js": "/static/js/453.19c7e6ca.chunk.js",
+    "static/media/johnny_2024.jpg": "/static/media/johnny_2024.d3469f5810d14590db64.jpg",
+    "static/media/Job-Resume-Aug-1st-2025-Johnny.pdf": "/static/media/Job-Resume-Aug-1st-2025-Johnny.281336d8ce68f8b9bd92.pdf",
+    "index.html": "/index.html",
+    "main.2c3308b8.css.map": "/static/css/main.2c3308b8.css.map",
+    "main.aee3bcc6.js.map": "/static/js/main.aee3bcc6.js.map",
+    "453.19c7e6ca.chunk.js.map": "/static/js/453.19c7e6ca.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2c3308b8.css",
-    "static/js/main.77bf954c.js"
+    "static/js/main.aee3bcc6.js"
   ]
 }
