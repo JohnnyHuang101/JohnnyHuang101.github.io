@@ -38,7 +38,7 @@ const about = {
   imageSize: 400,
   message:
     "Hi, I’m Johnny — welcome to my portfolio! 😄\n\nI’m currently a Senior at Washington University in St. Louis, pursuing a B.S. in Computer Science + Mathematics, and will be continuing for an M.S. in Computer Science in Spring 2026.\n\nOriginally from Shenzhen, China, I moved to the U.S. at age 12 and grew up in the Bay Area (Foster City). A fun fact: I have an identical twin brother, Johnson, who’s also studying CS and Math—at UC Berkeley!\n\nMy main interests lie in software engineering, especially building highly scalable and efficient systems, services, and databases. I also enjoy applying ML solutions in meaningful, production-ready settings (ie. RAG search systems). I have hands-on experience as a full-stack developer, building fast and resilient web servers and designing scalable SQL and NoSQL databases.\n\nI’ve also worked on end-to-end machine learning tools, including validation pipelines and agent-based systems powered by LLMs. Additionally, I’m familiar with cloud platforms like AWS and managing microservices using Docker containers.\n\nThis portfolio was built using JavaScript, Node, and React to highlight a few of my projects. They’re pretty cool—check them out! More details are on my GitHub!",
-  resume: require("../editable-stuff/Job-Resume-Aug-1st-2025-Johnny.pdf"),
+  resume: require("../editable-stuff/Job-Resume-Aug-13th-2025-Johnny.pdf"),
 };
 
 
