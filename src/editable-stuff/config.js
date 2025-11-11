@@ -5,7 +5,7 @@ const navBar = {
 
 // Main Body SECTION
 const mainBody = {
-  gradientColors: "rgb(0, 102, 204), rgb(0, 76, 153), rgb(0, 51, 102), rgb(25, 25, 112), rgb(70, 130, 180)",
+  gradientColors: "rgba(73, 164, 255, 1), rgba(0, 27, 54, 1), rgba(73, 164, 255, 1)",
   firstName: "Johnny",
   middleName: "",
   lastName: "Huang",
