@@ -13,4 +13,15 @@ Code of Website portfolio for Johnny
 
 /build
 
-git subtree push --prefix build origin gh-pages
+npm run build
+git add build -f
+git commit -m "Temporary deploy commit"
+git subtree split --prefix build -b gh-deploy-temp
+git push origin gh-deploy-temp:gh-pages --force
+
+clean up:
+
+git branch -D gh-deploy-temp
+git reset HEAD~1
+
+
