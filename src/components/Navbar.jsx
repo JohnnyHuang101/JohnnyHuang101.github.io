@@ -34,7 +34,7 @@ const Navigation = React.forwardRef((props, ref) => {
     return (
         <Navbar
             ref={navbarMenuRef}
-            className={`px-3 fixed-top ${!isTop ? "navbar-white" : "navbar-transparent"}`}
+            className={`px-3 fixed-top ${isTop ? "navbar-white" : "navbar-white"}`}
             expand="lg"
         >
             <Navbar.Brand className="navbar-brand" href={process.env.PUBLIC_URL + "/#home"}>
