@@ -13,41 +13,68 @@ const dummyProject = {
   languages_url: null,
   pushed_at: null,
 };
+
 const API = "https://api.github.com";
-// const gitHubQuery = "/repos?sort=updated&direction=desc";
+
+/**
+ * Get first image from README
+ */
+const getFirstImageFromReadme = async (owner, repo) => {
+  try {
+    const res = await axios.get(
+      `${API}/repos/${owner}/${repo}/readme`
+    );
+
+    const markdown = atob(res.data.content);
+    const match = markdown.match(/!\[.*?\]\((.*?)\)/);
+
+    if (!match) return null;
+
+    let imageUrl = match[1];
+
+    // Handle relative paths
+    if (!imageUrl.startsWith("http")) {
+      imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${imageUrl}`;
+    }
+
+    return imageUrl;
+  } catch {
+    return null;
+  }
+};
 
 const Project = ({ heading, username, length, specfic }) => {
   const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc`;
   const specficReposAPI = `${API}/repos/${username}`;
-  const dummyProjectsArr = new Array(length + specfic.length).fill(
-    dummyProject
-  );
 
+  const dummyProjectsArr = new Array(length + specfic.length).fill(dummyProject);
   const [projectsArray, setProjectsArray] = useState([]);
 
   const fetchRepos = useCallback(async () => {
-    let repoList = [];
     try {
-      // getting all repos
+      // 1️⃣ Get all repos
       const response = await axios.get(allReposAPI);
-      // slicing to the length
-      repoList = [...response.data.slice(0, length)];
-      // adding specified repos
-      try {
-        for (let repoName of specfic) {
-          const response = await axios.get(`${specficReposAPI}/${repoName}`);
-          repoList.push(response.data);
-        }
-      } catch (error) {
-        console.error(error.message);
+      let repos = response.data.slice(0, length);
+
+      // 2️⃣ Fetch specific repos
+      for (const repoName of specfic) {
+        const res = await axios.get(`${specficReposAPI}/${repoName}`);
+        repos.push(res.data);
       }
-      // setting projectArray
-      // TODO: remove the duplication.
-      setProjectsArray(repoList);
+
+      // 3️⃣ Fetch README images
+      const reposWithImages = await Promise.all(
+        repos.map(async (repo) => {
+          const image = await getFirstImageFromReadme(username, repo.name);
+          return { ...repo, readmeImage: image };
+        })
+      );
+
+      setProjectsArray(reposWithImages);
     } catch (error) {
       console.error(error.message);
     }
-  }, [allReposAPI, length, specfic, specficReposAPI]);
+  }, [allReposAPI, length, specfic, specficReposAPI, username]);
 
   useEffect(() => {
     fetchRepos();
@@ -55,24 +82,23 @@ const Project = ({ heading, username, length, specfic }) => {
 
   return (
     <Jumbotron fluid id="projects" className="bg-light m-0">
-      <Container className="">
+      <Container>
         <h2 className="display-4 pb-5 text-center">{heading}</h2>
         <Row>
           {projectsArray.length
             ? projectsArray.map((project, index) => (
-              <ProjectCard
-                key={`project-card-${index}`}
-                id={`project-card-${index}`}
-                value={project}
-              />
-            ))
+                <ProjectCard
+                  key={`project-card-${index}`}
+                  value={project}
+                  image={project.readmeImage}
+                />
+              ))
             : dummyProjectsArr.map((project, index) => (
-              <ProjectCard
-                key={`dummy-${index}`}
-                id={`dummy-${index}`}
-                value={project}
-              />
-            ))}
+                <ProjectCard
+                  key={`dummy-${index}`}
+                  value={project}
+                />
+              ))}
         </Row>
       </Container>
     </Jumbotron>

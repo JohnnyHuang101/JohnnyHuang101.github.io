@@ -4,7 +4,9 @@ import Card from "react-bootstrap/Card";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 
-const ProjectCard = ({ value }) => {
+
+
+const ProjectCard = ({ value, image }) => {
   const {
     name,
     description,
@@ -13,21 +15,46 @@ const ProjectCard = ({ value }) => {
     languages_url,
     pushed_at,
   } = value;
+
   return (
     <Col md={6}>
       <Card className="card shadow-lg p-3 mb-5 bg-white rounded">
+
+        {image && (
+          <Card.Img
+            variant="top"
+            src={image}
+            alt={`${name} preview`}
+            style={{
+              objectFit: "cover",
+              maxHeight: "200px",
+            }}
+          />
+        )}
+
         <Card.Body>
-          <Card.Title as="h5">{name || <Skeleton />} </Card.Title>
-          <Card.Text>{(!description) ? "" : description || <Skeleton count={3} />} </Card.Text>
+          <Card.Title as="h5">{name || <Skeleton />}</Card.Title>
+
+          <Card.Text>
+            {!description ? "" : description || <Skeleton count={3} />}
+          </Card.Text>
+
           {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
+
           <hr />
+
           {languages_url ? (
             <Language languages_url={languages_url} repo_url={svn_url} />
           ) : (
             <Skeleton count={3} />
           )}
+
           {value ? (
-            <CardFooter star_count={stargazers_count} repo_url={svn_url} pushed_at={pushed_at} />
+            <CardFooter
+              star_count={stargazers_count}
+              repo_url={svn_url}
+              pushed_at={pushed_at}
+            />
           ) : (
             <Skeleton />
           )}
@@ -36,6 +63,7 @@ const ProjectCard = ({ value }) => {
     </Col>
   );
 };
+
 
 const CardButtons = ({ svn_url }) => {
   return (
