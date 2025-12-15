@@ -16,22 +16,23 @@ const dummyProject = {
 
 const API = "https://api.github.com";
 
-/**
- * Get first image from README
- */
-const getFirstImageFromReadme = async (owner, repo) => {
 
+const getFirstImageFromReadme = async (owner, repo) => {
   const cacheKey = `readme-image-${owner}-${repo}`;
   const cached = sessionStorage.getItem(cacheKey);
-
   if (cached) return cached;
-  try {
-    const res = await axios.get(
-      `${API}/repos/${owner}/${repo}/readme`
-    );
 
+  try {
+    const res = await github.get(`/repos/${owner}/${repo}/readme`);
     const markdown = atob(res.data.content);
-    const match = markdown.match(/!\[.*?\]\((.*?)\)/);
+
+    // 1️⃣ Markdown image
+    let match = markdown.match(/!\[.*?\]\((.*?)\)/);
+
+    // 2️⃣ HTML <img> fallback
+    if (!match) {
+      match = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
+    }
 
     if (!match) return null;
 
@@ -44,7 +45,8 @@ const getFirstImageFromReadme = async (owner, repo) => {
 
     sessionStorage.setItem(cacheKey, imageUrl);
     return imageUrl;
-  } catch {
+  } catch (err) {
+    console.error("README image fetch failed:", err);
     return null;
   }
 };
