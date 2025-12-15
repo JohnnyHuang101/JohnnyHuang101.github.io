@@ -16,20 +16,20 @@ const dummyProject = {
 
 const API = "https://api.github.com";
 
-
 const getFirstImageFromReadme = async (owner, repo) => {
+
   const cacheKey = `readme-image-${owner}-${repo}`;
   const cached = sessionStorage.getItem(cacheKey);
+
   if (cached) return cached;
-
   try {
-    const res = await github.get(`/repos/${owner}/${repo}/readme`);
-    const markdown = atob(res.data.content);
+    const res = await axios.get(
+      `${API}/repos/${owner}/${repo}/readme`
+    );
 
-    // 1️⃣ Markdown image
+    const markdown = atob(res.data.content);
     let match = markdown.match(/!\[.*?\]\((.*?)\)/);
 
-    // 2️⃣ HTML <img> fallback
     if (!match) {
       match = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
     }
@@ -45,11 +45,44 @@ const getFirstImageFromReadme = async (owner, repo) => {
 
     sessionStorage.setItem(cacheKey, imageUrl);
     return imageUrl;
-  } catch (err) {
-    console.error("README image fetch failed:", err);
+  } catch {
     return null;
   }
 };
+
+// const getFirstImageFromReadme = async (owner, repo) => {
+//   const cacheKey = `readme-image-${owner}-${repo}`;
+//   const cached = sessionStorage.getItem(cacheKey);
+//   if (cached) return cached;
+
+//   try {
+//     const res = await github.get(`/repos/${owner}/${repo}/readme`);
+//     const markdown = atob(res.data.content);
+
+//     // 1️⃣ Markdown image
+//     let match = markdown.match(/!\[.*?\]\((.*?)\)/);
+
+//     // // 2️⃣ HTML <img> fallback
+//     // if (!match) {
+//     //   match = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
+//     // }
+
+//     if (!match) return null;
+
+//     let imageUrl = match[1];
+
+//     // Handle relative paths
+//     if (!imageUrl.startsWith("http")) {
+//       imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${imageUrl}`;
+//     }
+
+//     sessionStorage.setItem(cacheKey, imageUrl);
+//     return imageUrl;
+//   } catch (err) {
+//     console.error("README image fetch failed:", err);
+//     return null;
+//   }
+// };
 
 const Project = ({ heading, username, length, specfic }) => {
   const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc`;
