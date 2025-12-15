@@ -20,6 +20,11 @@ const API = "https://api.github.com";
  * Get first image from README
  */
 const getFirstImageFromReadme = async (owner, repo) => {
+
+  const cacheKey = `readme-image-${owner}-${repo}`;
+  const cached = sessionStorage.getItem(cacheKey);
+
+  if (cached) return cached;
   try {
     const res = await axios.get(
       `${API}/repos/${owner}/${repo}/readme`
@@ -37,6 +42,7 @@ const getFirstImageFromReadme = async (owner, repo) => {
       imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${imageUrl}`;
     }
 
+    sessionStorage.setItem(cacheKey, imageUrl);
     return imageUrl;
   } catch {
     return null;
