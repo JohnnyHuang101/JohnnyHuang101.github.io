@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d53077e5.css",
+    "main.js": "/static/js/main.57a449ed.js",
+    "static/js/453.19c7e6ca.chunk.js": "/static/js/453.19c7e6ca.chunk.js",
+    "static/media/johnny_2024.jpg": "/static/media/johnny_2024.d3469f5810d14590db64.jpg",
+    "static/media/Job-Resume-Aug-13th-2025-Johnny.pdf": "/static/media/Job-Resume-Aug-13th-2025-Johnny.37cccf83aa75933f0229.pdf",
+    "index.html": "/index.html",
+    "main.d53077e5.css.map": "/static/css/main.d53077e5.css.map",
+    "main.57a449ed.js.map": "/static/js/main.57a449ed.js.map",
+    "453.19c7e6ca.chunk.js.map": "/static/js/453.19c7e6ca.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d53077e5.css",
+    "static/js/main.57a449ed.js"
+  ]
+}
