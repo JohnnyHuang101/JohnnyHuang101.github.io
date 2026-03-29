@@ -1,17 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.d53077e5.css",
-    "main.js": "/static/js/main.57a449ed.js",
-    "static/js/453.19c7e6ca.chunk.js": "/static/js/453.19c7e6ca.chunk.js",
+    "main.css": "/static/css/main.e29f370d.css",
+    "main.js": "/static/js/main.9e0a44f9.js",
+    "static/js/453.3785e46f.chunk.js": "/static/js/453.3785e46f.chunk.js",
     "static/media/johnny_2024.jpg": "/static/media/johnny_2024.d3469f5810d14590db64.jpg",
-    "static/media/Job-Resume-Aug-13th-2025-Johnny.pdf": "/static/media/Job-Resume-Aug-13th-2025-Johnny.37cccf83aa75933f0229.pdf",
     "index.html": "/index.html",
-    "main.d53077e5.css.map": "/static/css/main.d53077e5.css.map",
-    "main.57a449ed.js.map": "/static/js/main.57a449ed.js.map",
-    "453.19c7e6ca.chunk.js.map": "/static/js/453.19c7e6ca.chunk.js.map"
+    "main.e29f370d.css.map": "/static/css/main.e29f370d.css.map",
+    "main.9e0a44f9.js.map": "/static/js/main.9e0a44f9.js.map",
+    "453.3785e46f.chunk.js.map": "/static/js/453.3785e46f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d53077e5.css",
-    "static/js/main.57a449ed.js"
+    "static/css/main.e29f370d.css",
+    "static/js/main.9e0a44f9.js"
   ]
 }
