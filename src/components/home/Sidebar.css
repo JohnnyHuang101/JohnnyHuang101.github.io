@@ -11,13 +11,14 @@
  
 .floating-img {
   position: absolute;
-  width: 70px; 
+  width: 50px; 
   border-radius: 50%; 
   top: 0; 
   
   animation-name: fallAndSpin;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
 }
  
 @keyframes fallAndSpin {

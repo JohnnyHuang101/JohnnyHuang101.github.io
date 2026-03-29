@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       {/* 2. Reduced length from 10 to 3 to make them much less frequent */}
-      {Array.from({ length: 7 }).map((_, i) => {
+      {Array.from({ length: 10 }).map((_, i) => {
         const img = images[i % images.length];
         
         return (
