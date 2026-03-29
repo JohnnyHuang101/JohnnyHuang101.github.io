@@ -1,0 +1,30 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw; /* Changed to cover the entire screen width */
+  height: 100vh;
+  overflow: hidden; 
+  z-index: 100;
+  pointer-events: none; /* THE MAGIC FIX: Lets all clicks pass right through! */
+}
+ 
+.floating-img {
+  position: absolute;
+  width: 70px; 
+  border-radius: 50%; 
+  top: 0; 
+  
+  animation-name: fallAndSpin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+ 
+@keyframes fallAndSpin {
+  0% {
+    transform: translateY(-150px) rotate(0deg); 
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}

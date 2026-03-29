@@ -47,8 +47,7 @@ const about = {
       <br /><br />
       I built this site to share my work. with node and react. Check out my projects below!
     </span>
-  ),
-  resume: require("../editable-stuff/Job-Resume-Aug-13th-2025-Johnny.pdf"),
+  )
 };
 
 

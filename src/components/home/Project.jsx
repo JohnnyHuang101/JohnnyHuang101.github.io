@@ -16,6 +16,13 @@ const dummyProject = {
 
 const API = "https://api.github.com";
 
+const axiosConfig = {
+  headers: {
+    // Add this authorization header to bypass the 60 request/hr limit
+    Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}` 
+  }
+};
+
 const getFirstImageFromReadme = async (owner, repo) => {
 
   const cacheKey = `readme-image-${owner}-${repo}`;
@@ -24,7 +31,8 @@ const getFirstImageFromReadme = async (owner, repo) => {
   if (cached) return cached;
   try {
     const res = await axios.get(
-      `${API}/repos/${owner}/${repo}/readme`
+      `${API}/repos/${owner}/${repo}/readme`,
+      axiosConfig
     );
 
     const markdown = atob(res.data.content);
@@ -94,12 +102,12 @@ const Project = ({ heading, username, length, specfic }) => {
   const fetchRepos = useCallback(async () => {
     try {
       // 1️⃣ Get all repos
-      const response = await axios.get(allReposAPI);
+      const response = await axios.get(allReposAPI, axiosConfig);
       let repos = response.data.slice(0, length);
 
       // 2️⃣ Fetch specific repos
       for (const repoName of specfic) {
-        const res = await axios.get(`${specficReposAPI}/${repoName}`);
+        const res = await axios.get(`${specficReposAPI}/${repoName}`, axiosConfig);
         repos.push(res.data);
       }
 
