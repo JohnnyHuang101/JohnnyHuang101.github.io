@@ -21,12 +21,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "npm run build && git add build -f && git commit -m \"Temporary deploy commit\" && git subtree split --prefix build -b gh-deploy-temp && git push origin gh-deploy-temp:gh-pages --force && git branch -D gh-deploy-temp && git reset HEAD~1",
-    "dev": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "engines": {
     "npm": "^10.2.3",
