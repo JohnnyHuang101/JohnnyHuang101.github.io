@@ -32,7 +32,7 @@ const getFirstImageFromReadme = async (owner, repo) => {
   try {
     const res = await axios.get(
       `${API}/repos/${owner}/${repo}/readme`,
-      axiosConfig
+      // axiosConfig
     );
 
     const markdown = atob(res.data.content);
@@ -102,12 +102,12 @@ const Project = ({ heading, username, length, specfic }) => {
   const fetchRepos = useCallback(async () => {
     try {
       // 1️⃣ Get all repos
-      const response = await axios.get(allReposAPI, axiosConfig);
+      const response = await axios.get(allReposAPI);//, axiosConfig
       let repos = response.data.slice(0, length);
 
       // 2️⃣ Fetch specific repos
       for (const repoName of specfic) {
-        const res = await axios.get(`${specficReposAPI}/${repoName}`, axiosConfig);
+        const res = await axios.get(`${specficReposAPI}/${repoName}`); //, axiosConfig
         repos.push(res.data);
       }
 
