@@ -5,16 +5,20 @@ import {
     mainBody,
     about,
     repos,
+    skills,
     getInTouch,
 } from "./editable-stuff/config.js";
+
+
 import MainBody from "./components/home/MainBody";
 import AboutMe from "./components/home/AboutMe";
 import Project from "./components/home/Project";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/home/Sidebar";
-// import { Blog } from "./components/blog/Blog";
-// import BlogPost from "./components/blog/BlogPost";
+import Skills from "./components/home/Skills";
+
+
 import GetInTouch from "./components/home/GetInTouch.jsx";
 
 const Home = React.forwardRef((props, ref) => {
@@ -34,6 +38,12 @@ const Home = React.forwardRef((props, ref) => {
                     link={about.imageLink}
                     imgSize={about.imageSize}
                     resume={about.resume}
+                />
+            )}
+            {skills.show && (
+                <Skills
+                    heading={skills.heading}
+                    hardSkills={skills.hardSkills}
                 />
             )}
             {repos.show && (

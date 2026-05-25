@@ -39,13 +39,13 @@ const about = {
     <span>
       Hi, I’m Johnny! 👋 I’m a recent <b>B.S. CS + Math graduate from WashU in St.Louis (SP 2026)</b>. I grew up in the bay area but am originally from ShenZhen China and finished secondary school in China. <b>Fun Fact:</b> If you ever see someone look like me on linkedin, I have an identical twin brother who codes too-- he's at UC Berkeley.
       <br /><br />
-      I specialize in bridging the gap between <b>scalable engineering and cutting-edge AI</b>. I focus on delivering results above all with my work and I'm good at scaling visionary projects to production-ready applications.
+      I specialize in bridging the gap between <b>scalable engineering and AI agent systems</b> that work autonomously. <b>I focus on owning projects and delivering results above all with my work and I'm good at scaling ideas to production-ready applications</b>.
       <br /><br />
-      I’ve helped the City of San Francisco keep their systems running during massive traffic spikes (<b>scaling 250x</b>) that's now used by all city administrators, and I’ve designed and trained multi-modal AI models for <b>Thermo Fisher</b> that help analyze forensic data faster by <b>20%</b>.
+      I’m a software engineer specializing in scalable infrastructure and applied machine learning. Professionally, I’ve architected distributed, event-driven systems for the <b>City of San Francisco</b> to ensure platform stability during massive traffic surges, developed multi-modal AI models to automate forensic data workflows, and deployed high-throughput RAG search pipelines for enterprise CRM tools at companies.
       <br /><br />
-      In my freetime i like to build things that I think are interesting and impactful. From <b>high-frequency trading engines</b> backends that i researched with low-level machine code in Rust to horizontally scalable video chat platforms that can elastically become ready to handle a single to 1 million active requests within minutes, I love building end-to-end products for complex problems. I've also trained and utilized many custom <b>Machine learning models</b> for smart RAG search interfaces & a personal <b>AI agent</b> that manages your google calendar for you linked to your google account.
+      In my free time, I love building end-to-end products to solve complex problems. My technical interests span the entire stack—from engineering low-latency <b>high-frequency trading engines</b> in Rust and C, to building horizontally scalable, real-time communication platforms in Golang. I'm also deeply invested in LLM engineering, creating custom machine learning pipelines and autonomous <b>AI agents</b> that securely integrate with platforms like Google Workspace to manage everyday workflows.
       <br /><br />
-      I built this site to share my work. with node and react. Check out my projects below!
+      I built this site to share my work. Check out my projects below!
     </span>
   )
 };
@@ -60,6 +60,40 @@ const repos = {
 };
 
 
+const skills = {
+  show: true,
+  heading: "Skills",
+  hardSkills: [
+    // ML
+    { name: "PyTorch", value: 80, icon: "pytorch", category: "ML" },
+    { name: "HuggingFace", value: 80, icon: "huggingface", category: "ML" },
+    { name: "LangGraph", value: 80, icon: "langgraph", category: "ML" },
+    { name: "Pydantic", value: 80, icon: "pydantic", category: "ML" },
+    { name: "CUDA", value: 60, icon: "cuda", category: "ML" },
+    // Frameworks
+    { name: "Docker", value: 80, icon: "docker", category: "Frameworks" },
+    { name: "FastAPI", value: 80, icon: "fastapi", category: "Frameworks" },
+    { name: "Redis", value: 80, icon: "redis", category: "Frameworks" },
+    { name: "Kubernetes", value: 60, icon: "kubernetes", category: "Frameworks" },
+    { name: "Kafka", value: 60, icon: "kafka", category: "Frameworks" },
+    { name: "Flask", value: 80, icon: "flask", category: "Frameworks" },
+    { name: "Spring Boot", value: 80, icon: "springboot", category: "Frameworks" },
+    { name: "Git", value: 100, icon: "git", category: "Frameworks" },
+    // Backend
+    { name: "Python", value: 100, icon: "python", category: "Backend" },
+    { name: "Java", value: 100, icon: "java", category: "Backend" },
+    { name: "SQL", value: 80, icon: "sql", category: "Backend" },
+    { name: "Golang", value: 80, icon: "golang", category: "Backend" },
+    { name: "NoSQL", value: 60, icon: "nosql", category: "Backend" },
+    { name: "Rust", value: 60, icon: "rust", category: "Backend" },
+    // Frontend
+    { name: "React", value: 60, icon: "react", category: "Frontend" },
+    { name: "JavaScript", value: 80, icon: "javascript", category: "Frontend" },
+    { name: "Vue", value: 80, icon: "vue", category: "Frontend" },
+  ],
+};
+
+
 const getInTouch = {
   show: true,
   heading: "Getting In Touch",
@@ -68,4 +102,4 @@ const getInTouch = {
 };
 
 
-export { navBar, mainBody, about, repos, getInTouch };
+export { navBar, mainBody, about, repos, getInTouch, skills };

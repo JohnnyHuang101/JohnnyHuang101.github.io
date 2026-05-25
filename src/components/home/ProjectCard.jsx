@@ -18,11 +18,13 @@ const ProjectCard = ({ value }) => {
     previewType,
   } = value;
 
+  const isVideo = previewType === "video";
+
   return (
-    <Col md={6}>
+    <Col md={isVideo ? 12 : 6} className="mb-4">
       <Card className="card shadow-lg p-3 mb-5 bg-white rounded">
 
-        {previewType === "video" ? (
+        {isVideo ? (
           <video
             autoPlay
             loop
@@ -31,7 +33,7 @@ const ProjectCard = ({ value }) => {
             className="w-100"
             style={{
               objectFit: "cover",
-              maxHeight: "200px",
+              maxHeight: "480px",        // bigger for video
               borderTopLeftRadius: "0.375rem",
               borderTopRightRadius: "0.375rem",
             }}
@@ -46,7 +48,7 @@ const ProjectCard = ({ value }) => {
               alt={`${name} preview`}
               style={{
                 objectFit: "cover",
-                maxHeight: "200px",
+                maxHeight: "200px",      // stays compact for images
               }}
             />
           )
@@ -54,21 +56,16 @@ const ProjectCard = ({ value }) => {
 
         <Card.Body>
           <Card.Title as="h5">{name || <Skeleton />}</Card.Title>
-
           <Card.Text>
             {!description ? "" : description || <Skeleton count={3} />}
           </Card.Text>
-
           {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
-
           <hr />
-
           {languages_url ? (
             <Language languages_url={languages_url} repo_url={svn_url} />
           ) : (
             <Skeleton count={3} />
           )}
-
           {value ? (
             <CardFooter
               star_count={stargazers_count}

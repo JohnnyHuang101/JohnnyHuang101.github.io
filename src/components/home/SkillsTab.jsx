@@ -10,6 +10,7 @@ function SkillsSection({ skills, isScrolled }) {
           key={`${skill}-${index}`}
           skill={skill.name}
           value={skill.value}
+          icon={skill.icon}
           isScrolled={isScrolled}
         />
       ))}
