@@ -19,7 +19,7 @@ const API = "https://api.github.com";
 const axiosConfig = {
   headers: {
     // Add this authorization header to bypass the 60 request/hr limit
-    Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}` 
+    Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`
   }
 };
 
@@ -58,39 +58,52 @@ const getFirstImageFromReadme = async (owner, repo) => {
   }
 };
 
-// const getFirstImageFromReadme = async (owner, repo) => {
-//   const cacheKey = `readme-image-${owner}-${repo}`;
-//   const cached = sessionStorage.getItem(cacheKey);
-//   if (cached) return cached;
+function importAll(r) {
+  const files = {};
 
-//   try {
-//     const res = await github.get(`/repos/${owner}/${repo}/readme`);
-//     const markdown = atob(res.data.content);
+  r.keys().forEach((item) => {
+    const key = item.replace("./", "");
+    files[key] = r(item);
+  });
 
-//     // 1️⃣ Markdown image
-//     let match = markdown.match(/!\[.*?\]\((.*?)\)/);
+  return files;
+}
 
-//     // // 2️⃣ HTML <img> fallback
-//     // if (!match) {
-//     //   match = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
-//     // }
+const mediaFiles = importAll(
+  require.context(
+    "../../assets/previews",
+    false,
+    /\.(mp4|webm|gif|png|jpg|jpeg)$/i
+  )
+);
 
-//     if (!match) return null;
+console.log("mediaFiles keys:", Object.keys(mediaFiles));
 
-//     let imageUrl = match[1];
+const getLocalPreview = (repoName) => {
+  const extensions = [
+    "mp4",
+    "webm",
+    "gif",
+    "png",
+    "jpg",
+    "jpeg",
+  ];
 
-//     // Handle relative paths
-//     if (!imageUrl.startsWith("http")) {
-//       imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${imageUrl}`;
-//     }
+  for (const ext of extensions) {
+    const filename = `${repoName}.${ext}`;
 
-//     sessionStorage.setItem(cacheKey, imageUrl);
-//     return imageUrl;
-//   } catch (err) {
-//     console.error("README image fetch failed:", err);
-//     return null;
-//   }
-// };
+    if (mediaFiles[filename]) {
+      return {
+        media: mediaFiles[filename],
+        type: ["mp4", "webm"].includes(ext)
+          ? "video"
+          : "image",
+      };
+    }
+  }
+
+  return null;
+};
 
 const Project = ({ heading, username, length, specfic }) => {
   const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc`;
@@ -99,9 +112,27 @@ const Project = ({ heading, username, length, specfic }) => {
   const dummyProjectsArr = new Array(length + specfic.length).fill(dummyProject);
   const [projectsArray, setProjectsArray] = useState([]);
 
+  const CACHE_KEY = `projects-${username}`;
+  const CACHE_DURATION = 1000 * 60 * 30; // 30 minutes
+
+
   const fetchRepos = useCallback(async () => {
     try {
-      // 1️⃣ Get all repos
+      // 1️⃣ Check cache first
+      const cached = sessionStorage.getItem(CACHE_KEY);
+
+      if (cached) {
+        const parsed = JSON.parse(cached);
+
+        const isExpired =
+          Date.now() - parsed.timestamp > CACHE_DURATION;
+
+        if (!isExpired) {
+          setProjectsArray(parsed.data);
+          return;
+        }
+      }
+
       const response = await axios.get(allReposAPI);//, axiosConfig
       let repos = response.data.slice(0, length);
 
@@ -112,14 +143,42 @@ const Project = ({ heading, username, length, specfic }) => {
       }
 
       // 3️⃣ Fetch README images
-      const reposWithImages = await Promise.all(
+      const reposWithMedia = await Promise.all(
         repos.map(async (repo) => {
-          const image = await getFirstImageFromReadme(username, repo.name);
-          return { ...repo, readmeImage: image };
+
+          const localPreview = getLocalPreview(repo.name);
+
+          if (localPreview) {
+            return {
+              ...repo,
+              previewMedia: localPreview.media,
+              previewType: localPreview.type,
+            };
+          }
+
+          // fallback to README image
+          const image = await getFirstImageFromReadme(
+            username,
+            repo.name
+          );
+
+          return {
+            ...repo,
+            previewMedia: image,
+            previewType: "image",
+          };
         })
       );
 
-      setProjectsArray(reposWithImages);
+      sessionStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          timestamp: Date.now(),
+          data: reposWithMedia,
+        })
+      );
+
+      setProjectsArray(reposWithMedia);
     } catch (error) {
       console.error(error.message);
     }
@@ -136,18 +195,17 @@ const Project = ({ heading, username, length, specfic }) => {
         <Row>
           {projectsArray.length
             ? projectsArray.map((project, index) => (
-                <ProjectCard
-                  key={`project-card-${index}`}
-                  value={project}
-                  image={project.readmeImage}
-                />
-              ))
+              <ProjectCard
+                key={`project-card-${index}`}
+                value={project}
+              />
+            ))
             : dummyProjectsArr.map((project, index) => (
-                <ProjectCard
-                  key={`dummy-${index}`}
-                  value={project}
-                />
-              ))}
+              <ProjectCard
+                key={`dummy-${index}`}
+                value={project}
+              />
+            ))}
         </Row>
       </Container>
     </Jumbotron>

@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 
-const ProjectCard = ({ value, image }) => {
+const ProjectCard = ({ value }) => {
   const {
     name,
     description,
@@ -14,22 +14,42 @@ const ProjectCard = ({ value, image }) => {
     stargazers_count,
     languages_url,
     pushed_at,
+    previewMedia,
+    previewType,
   } = value;
 
   return (
     <Col md={6}>
       <Card className="card shadow-lg p-3 mb-5 bg-white rounded">
 
-        {image && (
-          <Card.Img
-            variant="top"
-            src={image}
-            alt={`${name} preview`}
+        {previewType === "video" ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-100"
             style={{
               objectFit: "cover",
               maxHeight: "200px",
+              borderTopLeftRadius: "0.375rem",
+              borderTopRightRadius: "0.375rem",
             }}
-          />
+          >
+            <source src={previewMedia} type="video/mp4" />
+          </video>
+        ) : (
+          previewMedia && (
+            <Card.Img
+              variant="top"
+              src={previewMedia}
+              alt={`${name} preview`}
+              style={{
+                objectFit: "cover",
+                maxHeight: "200px",
+              }}
+            />
+          )
         )}
 
         <Card.Body>
@@ -81,12 +101,36 @@ const CardButtons = ({ svn_url }) => {
   );
 };
 
+
+const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
+
+const getCached = (key) => {
+  const item = localStorage.getItem(key);
+  if (!item) return null;
+  const { value, timestamp } = JSON.parse(item);
+  if (Date.now() - timestamp > CACHE_TTL) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return value;
+};
+
+const setCached = (key, value) => {
+  localStorage.setItem(key, JSON.stringify({ value, timestamp: Date.now() }));
+};
+
+
 const Language = ({ languages_url, repo_url }) => {
   const [data, setData] = useState([]);
 
   const handleRequest = useCallback(async () => {
     try {
+
+      const cached = getCached(languages_url);
+      if (cached) return setData(cached);
+
       const response = await axios.get(languages_url);
+      setCached(languages_url, response.data);
       return setData(response.data);
     } catch (error) {
       console.error(error.message);

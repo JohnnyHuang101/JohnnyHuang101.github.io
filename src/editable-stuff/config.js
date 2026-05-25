@@ -13,20 +13,20 @@ const mainBody = {
   icons: [
     {
       image: "fa-github",
-          url: "https://github.com/JohnnyHuang101",
+      url: "https://github.com/JohnnyHuang101",
     },
     {
       image: "fa-linkedin",
-        url: "https://www.linkedin.com/in/johnny-li-huang/",
-      },
-      {
-          image: "fa-hackerrank",
-          url: "https://leetcode.com/u/johnnybaguettes/",
-      },
-      {
-        image: "fas fa-share-alt",
-        url: "mailto:h.johnny@wustl.edu",
-      },
+      url: "https://www.linkedin.com/in/johnny-li-huang/",
+    },
+    {
+      image: "fa-hackerrank",
+      url: "https://leetcode.com/u/johnnybaguettes/",
+    },
+    {
+      image: "fas fa-share-alt",
+      url: "mailto:h.johnny@wustl.edu",
+    },
   ],
 };
 
@@ -41,7 +41,7 @@ const about = {
       <br /><br />
       I specialize in bridging the gap between <b>scalable engineering and cutting-edge AI</b>. I focus on delivering results above all with my work and I'm good at scaling visionary projects to production-ready applications.
       <br /><br />
-      I’ve helped the City of San Francisco keep their systems running during massive traffic spikes (<b>scaling 250x</b>) that's now used by all city administrators, and I’ve designed and trained multi-modal AI models for <b>Thermo Fisher</b> that help analyze forensic data faster by <b>20%</b>. 
+      I’ve helped the City of San Francisco keep their systems running during massive traffic spikes (<b>scaling 250x</b>) that's now used by all city administrators, and I’ve designed and trained multi-modal AI models for <b>Thermo Fisher</b> that help analyze forensic data faster by <b>20%</b>.
       <br /><br />
       In my freetime i like to build things that I think are interesting and impactful. From <b>high-frequency trading engines</b> backends that i researched with low-level machine code in Rust to horizontally scalable video chat platforms that can elastically become ready to handle a single to 1 million active requests within minutes, I love building end-to-end products for complex problems. I've also trained and utilized many custom <b>Machine learning models</b> for smart RAG search interfaces & a personal <b>AI agent</b> that manages your google calendar for you linked to your google account.
       <br /><br />
@@ -54,18 +54,18 @@ const about = {
 const repos = {
   show: true,
   heading: "Recent Projects / Click Repo to find out more!",
-  gitHubUsername: "JohnnyHuang101", 
+  gitHubUsername: "JohnnyHuang101",
   reposLength: 0,
-    specificRepos: ["johnnycoin", "jarvis", "Halu--OpenBMB-4B-Tuned-and-Inference", "-watchparty_2.0", "JohnnyHuang101.github.io", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman"],
+  specificRepos: ["jarvis", "johnnycoin", "Halu--OpenBMB-4B-Tuned-and-Inference", "-watchparty_2.0", "JohnnyHuang101.github.io", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman"],
 };
 
 
 const getInTouch = {
-    show: true,
-    heading: "Getting In Touch",
-    message:
-        'Need to contact me? Send me an email linked at the top of my website!'
+  show: true,
+  heading: "Getting In Touch",
+  message:
+    'Need to contact me? Send me an email linked at the top of my website!'
 };
 
 
-export {navBar, mainBody, about, repos, getInTouch};
+export { navBar, mainBody, about, repos, getInTouch };
