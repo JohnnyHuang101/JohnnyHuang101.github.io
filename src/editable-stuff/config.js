@@ -56,7 +56,7 @@ const repos = {
   heading: "Recent Projects / Click Repo to find out more!",
   gitHubUsername: "JohnnyHuang101",
   reposLength: 0,
-  specificRepos: ["jarvis", "johnnycoin", "Halu--OpenBMB-4B-Tuned-and-Inference", "-watchparty_2.0", "JohnnyHuang101.github.io", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman"],
+  specificRepos: ["workspace", "jarvis", "johnnycoin", "Halu--OpenBMB-4B-Tuned-and-Inference", "-watchparty_2.0", "JohnnyHuang101.github.io", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman"],
 };
 
 
