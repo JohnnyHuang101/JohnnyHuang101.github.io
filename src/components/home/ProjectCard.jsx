@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Skeleton from "react-loading-skeleton";
-import axios from "axios";
-
-
 
 const ProjectCard = ({ value }) => {
   const {
@@ -12,10 +9,10 @@ const ProjectCard = ({ value }) => {
     description,
     svn_url,
     stargazers_count,
-    languages_url,
     pushed_at,
     previewMedia,
     previewType,
+    languagesData,
   } = value;
 
   const isVideo = previewType === "video";
@@ -23,7 +20,6 @@ const ProjectCard = ({ value }) => {
   return (
     <Col md={isVideo ? 12 : 6} className="mb-4">
       <Card className="card shadow-lg p-3 mb-5 bg-white rounded">
-
         {isVideo ? (
           <video
             autoPlay
@@ -33,7 +29,7 @@ const ProjectCard = ({ value }) => {
             className="w-100"
             style={{
               objectFit: "cover",
-              maxHeight: "480px",        // bigger for video
+              maxHeight: "480px",
               borderTopLeftRadius: "0.375rem",
               borderTopRightRadius: "0.375rem",
             }}
@@ -48,7 +44,7 @@ const ProjectCard = ({ value }) => {
               alt={`${name} preview`}
               style={{
                 objectFit: "cover",
-                maxHeight: "200px",      // stays compact for images
+                maxHeight: "200px",
               }}
             />
           )
@@ -57,16 +53,16 @@ const ProjectCard = ({ value }) => {
         <Card.Body>
           <Card.Title as="h5">{name || <Skeleton />}</Card.Title>
           <Card.Text>
-            {!description ? "" : description || <Skeleton count={3} />}
+            {name ? description || "No description provided." : <Skeleton count={3} />}
           </Card.Text>
           {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
           <hr />
-          {languages_url ? (
-            <Language languages_url={languages_url} repo_url={svn_url} />
+          {languagesData ? (
+            <Language languagesData={languagesData} repo_url={svn_url} />
           ) : (
-            <Skeleton count={3} />
+            <Skeleton count={2} />
           )}
-          {value ? (
+          {name ? (
             <CardFooter
               star_count={stargazers_count}
               repo_url={svn_url}
@@ -81,98 +77,62 @@ const ProjectCard = ({ value }) => {
   );
 };
 
-
 const CardButtons = ({ svn_url }) => {
   return (
     <div className="d-grid gap-2 d-md-block">
       <a
         href={`${svn_url}/archive/master.zip`}
         className="btn btn-outline-secondary mx-2"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <i className="fab fa-github" /> Clone Project
       </a>
-      <a href={svn_url} target=" _blank" className="btn btn-outline-secondary mx-2">
+      <a
+        href={svn_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn-outline-secondary mx-2"
+      >
         <i className="fab fa-github" /> Repo
       </a>
     </div>
   );
 };
 
-
-const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
-
-const getCached = (key) => {
-  const item = localStorage.getItem(key);
-  if (!item) return null;
-  const { value, timestamp } = JSON.parse(item);
-  if (Date.now() - timestamp > CACHE_TTL) {
-    localStorage.removeItem(key);
-    return null;
-  }
-  return value;
-};
-
-const setCached = (key, value) => {
-  localStorage.setItem(key, JSON.stringify({ value, timestamp: Date.now() }));
-};
-
-
-const Language = ({ languages_url, repo_url }) => {
-  const [data, setData] = useState([]);
-
-  const handleRequest = useCallback(async () => {
-    try {
-
-      const cached = getCached(languages_url);
-      if (cached) return setData(cached);
-
-      const response = await axios.get(languages_url);
-      setCached(languages_url, response.data);
-      return setData(response.data);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }, [languages_url]);
-
-  useEffect(() => {
-    handleRequest();
-  }, [handleRequest]);
-
-  const array = [];
-  let total_count = 0;
-  for (let index in data) {
-    array.push(index);
-    total_count += data[index];
-  }
+const Language = ({ languagesData, repo_url }) => {
+  const languages = Object.keys(languagesData || {});
+  const total_count = Object.values(languagesData || {}).reduce((acc, bytes) => acc + bytes, 0);
 
   return (
     <div className="pb-3">
       Languages:{" "}
-      {array.length
-        ? array.map((language) => (
+      {languages.length ? (
+        languages.map((language) => (
           <a
             key={language}
             className="card-link"
-            href={repo_url + `/search?l=${language}`}
-            target=" _blank"
+            href={`${repo_url}/search?l=${language}`}
+            target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="badge bg-light text-dark">
-              {language}:{" "}
-              {Math.trunc((data[language] / total_count) * 1000) / 10} %
+            <span className="badge bg-light text-dark me-1">
+              {language}: {Math.trunc((languagesData[language] / total_count) * 1000) / 10}%
             </span>
           </a>
-
         ))
-        : "code yet to be deployed."}
+      ) : (
+        <span className="text-muted">Code yet to be analyzed.</span>
+      )}
     </div>
   );
 };
 
 const CardFooter = ({ star_count, repo_url, pushed_at }) => {
-  const [updated_at, setUpdated_at] = useState("0 mints");
+  const [updated_at, setUpdated_at] = useState("just now");
 
   const handleUpdatetime = useCallback(() => {
+    if (!pushed_at) return;
     const date = new Date(pushed_at);
     const nowdate = new Date();
     const diff = nowdate.getTime() - date.getTime();
@@ -181,7 +141,7 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
     if (hours < 24) {
       if (hours < 1) return setUpdated_at("just now");
       let measurement = hours === 1 ? "hour" : "hours";
-      return setUpdated_at(`${hours.toString()} ${measurement} ago`);
+      return setUpdated_at(`${hours} ${measurement} ago`);
     } else {
       const options = { day: "numeric", month: "long", year: "numeric" };
       const time = new Intl.DateTimeFormat("en-US", options).format(date);
@@ -196,8 +156,9 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
   return (
     <p className="card-text">
       <a
-        href={repo_url + "/stargazers"}
-        target=" _blank"
+        href={`${repo_url}/stargazers`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="text-dark text-decoration-none"
       >
         <span className="text-dark card-link mr-4">

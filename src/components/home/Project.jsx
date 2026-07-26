@@ -10,29 +10,18 @@ const dummyProject = {
   description: null,
   svn_url: null,
   stargazers_count: null,
-  languages_url: null,
+  languages_url: "dummy", // Keeps Skeleton structure consistent
   pushed_at: null,
+  languagesData: null,
 };
 
 const API = "https://api.github.com";
 
-const axiosConfig = {
-  headers: {
-    // Add this authorization header to bypass the 60 request/hr limit
-    Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`
-  }
-};
-
-const getFirstImageFromReadme = async (owner, repo) => {
-
-  const cacheKey = `readme-image-${owner}-${repo}`;
-  const cached = sessionStorage.getItem(cacheKey);
-
-  if (cached) return cached;
+const getFirstImageFromReadme = async (owner, repo, reqConfig) => {
   try {
     const res = await axios.get(
       `${API}/repos/${owner}/${repo}/readme`,
-      // axiosConfig
+      reqConfig
     );
 
     const markdown = atob(res.data.content);
@@ -46,26 +35,32 @@ const getFirstImageFromReadme = async (owner, repo) => {
 
     let imageUrl = match[1];
 
-    // Handle relative paths
     if (!imageUrl.startsWith("http")) {
-      imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${imageUrl}`;
+      const cleanPath = imageUrl.replace(/^\.\//, "");
+      imageUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/${cleanPath}`;
     }
 
-    sessionStorage.setItem(cacheKey, imageUrl);
     return imageUrl;
   } catch {
     return null;
   }
 };
 
+const fetchLanguages = async (languagesUrl, reqConfig) => {
+  try {
+    const res = await axios.get(languagesUrl, reqConfig);
+    return res.data;
+  } catch {
+    return {};
+  }
+};
+
 function importAll(r) {
   const files = {};
-
   r.keys().forEach((item) => {
     const key = item.replace("./", "");
     files[key] = r(item);
   });
-
   return files;
 }
 
@@ -77,35 +72,22 @@ const mediaFiles = importAll(
   )
 );
 
-console.log("mediaFiles keys:", Object.keys(mediaFiles));
-
 const getLocalPreview = (repoName) => {
-  const extensions = [
-    "mp4",
-    "webm",
-    "gif",
-    "png",
-    "jpg",
-    "jpeg",
-  ];
+  const extensions = ["mp4", "webm", "gif", "png", "jpg", "jpeg"];
 
   for (const ext of extensions) {
     const filename = `${repoName}.${ext}`;
-
     if (mediaFiles[filename]) {
       return {
         media: mediaFiles[filename],
-        type: ["mp4", "webm"].includes(ext)
-          ? "video"
-          : "image",
+        type: ["mp4", "webm"].includes(ext) ? "video" : "image",
       };
     }
   }
-
   return null;
 };
 
-const Project = ({ heading, username, length, specfic }) => {
+const Project = ({ heading, username, length, specfic = [] }) => {
   const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc`;
   const specficReposAPI = `${API}/repos/${username}`;
 
@@ -113,76 +95,94 @@ const Project = ({ heading, username, length, specfic }) => {
   const [projectsArray, setProjectsArray] = useState([]);
 
   const CACHE_KEY = `projects-${username}`;
-  const CACHE_DURATION = 1000 * 60 * 30; // 30 minutes
-
+  const CACHE_DURATION = 1000 * 60 * 60 * 24; // 1 day
 
   const fetchRepos = useCallback(async () => {
     try {
-      // 1️⃣ Check cache first
+      // Conditionally attach authorization headers
+      const hasToken = Boolean(process.env.REACT_APP_GITHUB_TOKEN);
+      const reqConfig = hasToken
+        ? {
+          headers: {
+            Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+          },
+        }
+        : undefined; // Makes explicit unauthenticated calls without extra headers
+
+      // 1. Primary Cache Check
       const cached = sessionStorage.getItem(CACHE_KEY);
-
       if (cached) {
-        const parsed = JSON.parse(cached);
-
-        const isExpired =
-          Date.now() - parsed.timestamp > CACHE_DURATION;
-
-        if (!isExpired) {
-          setProjectsArray(parsed.data);
-          return;
+        try {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < CACHE_DURATION) {
+            setProjectsArray(parsed.data);
+            return;
+          }
+        } catch {
+          sessionStorage.removeItem(CACHE_KEY);
         }
       }
 
-      const response = await axios.get(allReposAPI);//, axiosConfig
-      let repos = response.data.slice(0, length);
+      // 2. Fetch the main user repos list (WITH key if present, WITHOUT key if missing)
+      const response = await axios.get(allReposAPI, reqConfig);
+      const baseRepos = response.data.slice(0, length);
 
-      // 2️⃣ Fetch specific repos
-      for (const repoName of specfic) {
-        const res = await axios.get(`${specficReposAPI}/${repoName}`); //, axiosConfig
-        repos.push(res.data);
-      }
+      // 3. Helper: Enriches ANY repo firing Metadata, README, and Languages SIMULTANEOUSLY
+      const hydrateRepo = async (repoOrName) => {
+        const isString = typeof repoOrName === "string";
+        const repoName = isString ? repoOrName : repoOrName.name;
+        const localPreview = getLocalPreview(repoName);
 
-      // 3️⃣ Fetch README images
-      const reposWithMedia = await Promise.all(
-        repos.map(async (repo) => {
+        // Deterministic URLs — fire ALL 3 requests in parallel immediately!
+        const repoInfoPromise = isString
+          ? axios
+            .get(`${specficReposAPI}/${repoName}`, reqConfig)
+            .then((r) => r.data)
+            .catch(() => null)
+          : Promise.resolve(repoOrName);
 
-          const localPreview = getLocalPreview(repo.name);
+        const readmePromise = localPreview
+          ? Promise.resolve(null)
+          : getFirstImageFromReadme(username, repoName, reqConfig);
 
-          if (localPreview) {
-            return {
-              ...repo,
-              previewMedia: localPreview.media,
-              previewType: localPreview.type,
-            };
-          }
+        const languagesPromise = fetchLanguages(
+          `${API}/repos/${username}/${repoName}/languages`,
+          reqConfig
+        );
 
-          // fallback to README image
-          const image = await getFirstImageFromReadme(
-            username,
-            repo.name
-          );
+        // Fire all 3 concurrently for this single project
+        const [repoData, image, languagesData] = await Promise.all([
+          repoInfoPromise,
+          readmePromise,
+          languagesPromise,
+        ]);
 
-          return {
-            ...repo,
-            previewMedia: image,
-            previewType: "image",
-          };
-        })
-      );
+        if (!repoData) return null;
 
+        return {
+          ...repoData,
+          previewMedia: localPreview ? localPreview.media : image,
+          previewType: localPreview ? localPreview.type : "image",
+          languagesData,
+        };
+      };
+
+      // 4. Fire EVERYTHING across ALL projects in one massive Promise.all fan-out
+      const allTargets = [...baseRepos, ...specfic];
+      const results = await Promise.all(allTargets.map(hydrateRepo));
+      const validProjects = results.filter(Boolean);
+
+      // 5. Cache & Update State
       sessionStorage.setItem(
         CACHE_KEY,
-        JSON.stringify({
-          timestamp: Date.now(),
-          data: reposWithMedia,
-        })
+        JSON.stringify({ timestamp: Date.now(), data: validProjects })
       );
 
-      setProjectsArray(reposWithMedia);
+      setProjectsArray(validProjects);
     } catch (error) {
-      console.error(error.message);
+      console.error("Pipeline error:", error.message);
     }
-  }, [allReposAPI, length, specfic, specficReposAPI, username]);
+  }, [allReposAPI, length, specfic, specficReposAPI, username, CACHE_KEY, CACHE_DURATION]);
 
   useEffect(() => {
     fetchRepos();
@@ -195,16 +195,10 @@ const Project = ({ heading, username, length, specfic }) => {
         <Row>
           {projectsArray.length
             ? projectsArray.map((project, index) => (
-              <ProjectCard
-                key={`project-card-${index}`}
-                value={project}
-              />
+              <ProjectCard key={`project-card-${index}`} value={project} />
             ))
             : dummyProjectsArr.map((project, index) => (
-              <ProjectCard
-                key={`dummy-${index}`}
-                value={project}
-              />
+              <ProjectCard key={`dummy-${index}`} value={project} />
             ))}
         </Row>
       </Container>
