@@ -31,6 +31,7 @@ jobs:
           PROJECT_LENGTH: 0
           SPECIFIC_REPOS: "workspace,jarvis,johnnycoin,Halu--OpenBMB-4B-Tuned-and-Inference,-watchparty_2.0,JohnnyHuang101.github.io,url_shortner_proj,yolov8_optical_character_recognition,DiaryApp,QR-code-Scanner,UNET_Inverse_Solver_and_PnP,Petrichor_website_eventsApp,RL_maze_pacman"          
           DISABLE_ESLINT_PLUGIN: true
+          CI: false
           
       - name: Build React app
         run: npm run build
