@@ -1,4 +1,5 @@
 >>testing
+node .\scripts\FetchProjects.js
 npm install
 npm start
 

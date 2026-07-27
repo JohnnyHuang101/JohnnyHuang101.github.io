@@ -10,3 +10,5 @@
 npm-debug.log*
 yarn-debug.log*
 .env
+
+/src/data

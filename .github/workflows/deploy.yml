@@ -1,0 +1,41 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * *" # refresh data nightly even without a code push
+  workflow_dispatch: {} # lets you manually trigger from the Actions tab / gh CLI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch GitHub project data (authenticated, server-side only)
+        run: node scripts/fetchProjects.js
+        env:
+          # Auto-provided by GitHub Actions, scoped to this repo, never exposed to browsers.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: JohnnyHuang101 # change to your actual username
+          PROJECT_LENGTH: "8"
+          SPECIFIC_REPOS: "" # e.g. "repo-a,repo-b" if you use the specfic prop
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
