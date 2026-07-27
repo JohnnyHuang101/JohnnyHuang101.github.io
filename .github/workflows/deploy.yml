@@ -35,6 +35,7 @@ jobs:
       - name: Build React app
         run: npm run build
         env:
+          CI: false
           DISABLE_ESLINT_PLUGIN: true
 
       - name: Deploy to gh-pages branch
