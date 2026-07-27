@@ -8,8 +8,10 @@ const API = "https://api.github.com";
 // ---- CONFIG: match these to your <Project length={8} specfic={[...]} /> usage ----
 const USERNAME = process.env.GITHUB_USERNAME;
 const LENGTH = parseInt(process.env.PROJECT_LENGTH || "0", 10);
-const SPECIFIC_REPOS = (["workspace", "jarvis", "johnnycoin", "Halu--OpenBMB-4B-Tuned-and-Inference", "-watchparty_2.0", "JohnnyHuang101.github.io", "url_shortner_proj", "yolov8_optical_character_recognition", "DiaryApp", "QR-code-Scanner", "UNET_Inverse_Solver_and_PnP", "Petrichor_website_eventsApp", "RL_maze_pacman"]);
-
+const SPECIFIC_REPOS = (process.env.SPECIFIC_REPOS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
 const OUTPUT_PATH = path.join(__dirname, "../src/data/projects.json");
 

@@ -23,13 +23,13 @@ jobs:
         run: npm ci
 
       - name: Fetch GitHub project data (authenticated, server-side only)
-        run: node scripts/fetchProjects.js
+        run: node scripts/FetchProjects.js
         env:
           # Auto-provided by GitHub Actions, scoped to this repo, never exposed to browsers.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_USERNAME: JohnnyHuang101 # change to your actual username
-          PROJECT_LENGTH: "8"
-          SPECIFIC_REPOS: "" # e.g. "repo-a,repo-b" if you use the specfic prop
+          PROJECT_LENGTH: 0
+          SPECIFIC_REPOS: "workspace,jarvis,johnnycoin,Halu--OpenBMB-4B-Tuned-and-Inference,-watchparty_2.0,JohnnyHuang101.github.io,url_shortner_proj,yolov8_optical_character_recognition,DiaryApp,QR-code-Scanner,UNET_Inverse_Solver_and_PnP,Petrichor_website_eventsApp,RL_maze_pacman"          
 
       - name: Build React app
         run: npm run build
